@@ -18,6 +18,13 @@ class LinksController < ApplicationController
     end
   end
 
+  def stats
+    link = find_link
+    stats = StatsBuilder.new(link).call
+
+    render json: stats.to_json
+  end
+
   private
 
   def find_link

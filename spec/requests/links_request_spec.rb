@@ -50,4 +50,30 @@ RSpec.describe 'Links', type: :request do
       end
     end
   end
+
+  describe 'GET /urls/{token}/stats' do
+    let(:token) { 'uniq_token' }
+
+    context 'when token does NOT exists' do
+      it 'responds with 404' do
+        expect do
+          get "/urls/#{token}/stats"
+        end.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    context 'when token exists in DB' do
+      it 'returns statistic for given URL' do
+        link = create(:link, long_url: 'http://example.com/page', token: token)
+        create(:visit, link: link, ip: '63.98.4.0')
+
+        get "/urls/#{token}/stats"
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to eq(
+          { total_clicks: 1, uniq_ips: 1, ips_frequency: { '63.98.4.0' => 1 } }.to_json
+        )
+      end
+    end
+  end
 end
