@@ -1,24 +1,10 @@
-# README
+# URl Shortener, test task
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Implement a service to shorten URLs. The service should implement 3 requests:
+- `POST /urls` - returns the sorten URL
+- `GET /urls/:short_url` - returns the long URL and increases requests counter by 1
+- `GET /urls/:short_url/stats` - returns shorten URL clicks count
 
-Things you may want to cover:
+It is necessary to keep statistics on unique IP requests.
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+The project should be implemented using Ruby on Rails. DB's choice is yours.
