@@ -28,4 +28,26 @@ RSpec.describe 'Links', type: :request do
       end
     end
   end
+
+  describe 'POST /urls' do
+    context 'when all is going well' do
+      it 'creates new Link, returns shorten URL' do
+        post '/urls', params: { long_url: 'http://example.com' }
+
+        expect(response.body).to match('www.example.com/urls/')
+        expect(response).to have_http_status(:ok)
+        created_link = Link.find_by(long_url: 'http://example.com')
+        expect(created_link.token).not_to be_blank
+      end
+    end
+
+    context 'when validation error' do
+      it 'returns error' do
+        post '/urls', params: { long_url: nil }
+
+        expect(response.body).to eq("Long url can't be blank")
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+    end
+  end
 end

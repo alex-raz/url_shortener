@@ -8,6 +8,16 @@ class LinksController < ApplicationController
     redirect_to(link.long_url)
   end
 
+  def create
+    link = LinksCreator.new(params).call
+
+    if link.persisted?
+      render plain: link_long_url(link.token)
+    else
+      render plain: link.errors.first.full_message, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def find_link
