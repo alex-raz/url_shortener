@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Link < ApplicationRecord
+  validates :long_url, presence: true, url: true
+  validates :token, presence: true, uniqueness: true
 
   has_many :visits, dependent: :destroy
 end
